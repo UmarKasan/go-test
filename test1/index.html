@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="marketplace-api.js"></script>
+    <script>
+        async function displayAllItems() {
+    const items = await MarketplaceAPI.getAllItems();
+    // Code to display items on the page
+}
+
+async function addNewItem(itemData) {
+    const newItem = await MarketplaceAPI.createItem(itemData);
+    // Code to handle the newly created item
+}
+    </script>
+</body>
+</html>
