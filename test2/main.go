@@ -118,6 +118,7 @@ func createBook(w http.ResponseWriter, route *http.Request) {
 
 	json.NewEncoder(w).Encode(result)
 }
+
 func updateBook(w http.ResponseWriter, route *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

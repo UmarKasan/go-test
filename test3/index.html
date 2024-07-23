@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Items</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Marketplace Items</h1>
+    <table id="itemTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Condition</th>
+                <th>Collection Location</th>
+            </tr>
+        </thead>
+        <tbody id="itemList">
+            <!-- Items will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:8000/api/items')
+                .then(response => response.json())
+                .then(items => {
+                    const itemList = document.getElementById('itemList');
+                    items.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.FirstName || ''}</td>
+                            <td>${item.LastName || ''}</td>
+                            <td>${item.Product || ''}</td>
+                            <td>${item.Quantity || ''}</td>
+                            <td>${item.Condition || ''}</td>
+                            <td>${item['Collection-Location'] || ''}</td>
+                        `;
+                        itemList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching items:', error);
+                    const itemList = document.getElementById('itemList');
+                    itemList.innerHTML = '<tr><td colspan="6">Error loading items. Please try again later.</td></tr>';
+                });
+        });
+    </script>
+</body>
+</html>
