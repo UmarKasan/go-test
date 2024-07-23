@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -42,9 +43,19 @@ func main() {
 	router.HandleFunc("/api/items/{id}", updateItem).Methods("PUT")
 	router.HandleFunc("/api/items/{id}", deleteItem).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":8000", router))
-}
+	// Create a new CORS handler
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://127.0.0.1:5500"}, // Add your frontend origin here
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders: []string{"Content-Type", "Authorization"},
+	})
 
+	// Wrap the router with the CORS handler
+	handler := c.Handler(router)
+
+	log.Println("Server is running on http://localhost:8000")
+	log.Fatal(http.ListenAndServe(":8000", handler))
+}
 func getItems(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var items []Item
